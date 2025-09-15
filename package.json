@@ -5,13 +5,13 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "build": "echo 'No build needed'",
-    "test": "echo \"No tests specified\" && exit 0"
+    "dev": "node server.js",
+    "build": "npm install"
   },
-  "keywords": ["authentication", "otp", "email", "express", "nodejs"],
-  "author": "Your Name",
-  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "nodemailer": "^6.9.7",
@@ -19,11 +19,5 @@
     "jsonwebtoken": "^9.0.2",
     "express-rate-limit": "^7.1.5",
     "dotenv": "^16.3.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  },
-  "engines": {
-    "node": ">=14.0.0"
   }
 }
