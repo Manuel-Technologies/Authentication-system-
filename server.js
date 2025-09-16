@@ -385,7 +385,18 @@ app.get('/api/profile', verifyToken, (req, res) => {
 app.get('/api/health', (req, res) => {
   res.status(200).json({ 
     success: true, 
-    message: 'Authentication API is running' 
+    message: 'Authentication API is running',
+    timestamp: new Date().toISOString(),
+    cors: 'enabled'
+  });
+});
+
+// Test endpoint for CORS
+app.get('/api/test', (req, res) => {
+  res.status(200).json({ 
+    success: true, 
+    message: 'CORS test successful',
+    origin: req.headers.origin || 'no-origin'
   });
 });
 
@@ -406,9 +417,22 @@ app.use('*', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
+// Keep the server awake (self-ping every 10 minutes)
+const RENDER_URL = process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+setInterval(() => {
+  if (process.env.NODE_ENV === 'production') {
+    fetch(`${RENDER_URL}/api/health`)
+      .then(() => console.log('💚 Keep-alive ping'))
+      .catch(() => console.log('❌ Keep-alive failed'));
+  }
+}, 10 * 60 * 1000); // Every 10 minutes
+
 app.listen(PORT, () => {
   console.log(`🚀 Authentication server running on port ${PORT}`);
   console.log(`📧 Make sure to configure your email credentials in .env file`);
+  if (process.env.NODE_ENV === 'production') {
+    console.log(`💚 Keep-alive system activated`);
+  }
 });
 
 module.exports = app;
